@@ -15,9 +15,9 @@ contract OptimizedArraySort {
                 if (a > b) {
                     (data[j], data[i]) = (a, b);
                 }
-                unchecked { j++; }
+                unchecked { ++j; }
             }
-            unchecked { i++; }
+            unchecked { ++i; }
         }
         return data;
     }

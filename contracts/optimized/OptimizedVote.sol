@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.15;
 
-contract Vote {
+contract OptimizedVote {
     struct Voter {
         uint8 vote;
         bool voted;
@@ -18,16 +18,37 @@ contract Vote {
 
     Proposal[] proposals;
 
-    function createProposal(bytes32 _name) external {
-        proposals.push(Proposal({voteCount: 0, name: _name, ended: false}));
+    function createProposal(bytes32 _name) external returns (uint256 slot) {
+        assembly {
+            // Get the slot where we have our proposals
+            slot := sload(proposals.slot)
+        }
+
+        // Create an empty one
+        proposals.push();
+
+        // Grab the new empty proposal
+        Proposal storage newProposal = proposals[slot];
+
+        // Set the name
+        newProposal.name = _name;
+
+        // Increment slot to the next position
+        unchecked { ++slot; }
     }
 
     function vote(uint8 _proposal) external {
-        require(!voters[msg.sender].voted, 'already voted');
-        voters[msg.sender].vote = _proposal;
-        voters[msg.sender].voted = true;
+        Voter storage voter = voters[msg.sender];
 
-        proposals[_proposal].voteCount += 1;
+        require(!voter.voted, 'already voted');
+
+        voter.vote = _proposal;
+        voter.voted = true;
+
+        unchecked {
+            ++proposals[_proposal].voteCount;
+        }
+
     }
 
     function getVoteCount(uint8 _proposal) external view returns (uint8) {
