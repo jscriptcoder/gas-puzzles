@@ -43,7 +43,8 @@ contract OptimizedDistribute {
             pop(call(gas(), _contributor2, amount, 0, 0, 0, 0))
             pop(call(gas(), _contributor3, amount, 0, 0, 0, 0))
 
-            // TODO: better understand how the right amount is sent to 4
+            // TODO: better understand how the right amount is sent to 4.
+            //       Is the the remaining amount?
             selfdestruct(_contributor4)
         }
     }

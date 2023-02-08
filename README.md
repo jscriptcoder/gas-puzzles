@@ -5,7 +5,7 @@ These are the exercises from the Udemy course [Advanced Solidity: Understanding 
 The idea is to optimize the gas cost for each of the contracts. I'm currently working on the solutions under [contracts/optimized](contracts/optimized)
 
 ## Puzzles solved
-- [ ] Distribute
+- [x] Distribute
 - [x] Array Sum
 - [ ] Mint150
 - [ ] ERC165
